@@ -5,24 +5,27 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#000000">
-    <title>Unity Web Player | 脱獄ごっこ</title>
+    <title>Unity Web Player | 旧脱獄ごっこ</title>
 
-    <link rel="manifest" href="manifest.json">
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/TemplateData/favicon.ico">
+    <link rel="stylesheet" href="/TemplateData/style.css">
 
+    <!-- Service Worker登録 -->
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('service-worker.js')
-                .then(() => console.log('✅ Service Worker registered'))
-                .catch(err => console.error('❌ Service Worker registration failed:', err));
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(() => console.log('✅ Service Worker registered'))
+                    .catch(err => console.error('❌ SW registration failed:', err));
+            });
         }
     </script>
 </head>
 
 <body>
     <div id="unity-container" class="unity-desktop">
-        <canvas id="unity-canvas" width=1920 height=1080 tabindex="-1"></canvas>
+        <canvas id="unity-canvas" width="1920" height="1080" tabindex="-1"></canvas>
         <div id="unity-loading-bar">
             <div id="unity-logo"></div>
             <div id="unity-progress-bar-empty">

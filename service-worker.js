@@ -14,6 +14,7 @@ const contentToCache = [
     '/TemplateData/favicon.ico'
 ];
 
+// インストール時にキャッシュ登録
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(cacheName).then((cache) => {
@@ -22,6 +23,7 @@ self.addEventListener('install', (event) => {
     );
 });
 
+// 有効化と古いキャッシュ削除
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((keys) =>
@@ -36,6 +38,7 @@ self.addEventListener('activate', (event) => {
     );
 });
 
+// フェッチイベント：キャッシュ優先
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((response) => {
