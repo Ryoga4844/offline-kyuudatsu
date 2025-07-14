@@ -1,17 +1,17 @@
-﻿const cacheName = '脱獄-cache-v1';
+﻿const cacheName = 'game-cache-v1';
 
 const contentToCache = [
-    './',
-    './index.html',
-    './manifest.json',
-    './icon-192.png',
-    './icon-512.png',
-    './Build/NewWebBuild.data',
-    './Build/NewWebBuild.framework.js',
-    './Build/NewWebBuild.loader.js',
-    './Build/NewWebBuild.wasm',
-    './TemplateData/style.css',
-    './TemplateData/favicon.ico'
+    '/',
+    '/index.html',
+    '/manifest.json',
+    '/icon-192.png',
+    '/icon-512.png',
+    '/Build/NewWebBuild.data',
+    '/Build/NewWebBuild.framework.js',
+    '/Build/NewWebBuild.loader.js',
+    '/Build/NewWebBuild.wasm',
+    '/TemplateData/style.css',
+    '/TemplateData/favicon.ico'
 ];
 
 self.addEventListener('install', (event) => {
@@ -24,15 +24,15 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then((keys) => {
-            return Promise.all(
+        caches.keys().then((keys) =>
+            Promise.all(
                 keys.map((key) => {
                     if (key !== cacheName) {
                         return caches.delete(key);
                     }
                 })
-            );
-        })
+            )
+        )
     );
 });
 

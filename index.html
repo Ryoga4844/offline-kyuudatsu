@@ -2,27 +2,25 @@
 <html lang="ja">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#000000">
-    <title>脱獄ごっこ</title>
+    <title>Unity Web Player | 脱獄ごっこ</title>
 
-    <link rel="manifest" href="./manifest.json">
-    <link rel="icon" href="./TemplateData/favicon.ico">
-    <link rel="stylesheet" href="./TemplateData/style.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/TemplateData/favicon.ico">
+    <link rel="stylesheet" href="/TemplateData/style.css">
 
-    <!-- Service Worker登録 -->
+    <!-- Service Worker 登録 -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
+                navigator.serviceWorker.register('/service-worker.js')
                     .then(() => console.log('✅ Service Worker registered'))
-                    .catch(err => console.error('❌ SW registration failed:', err));
+                    .catch(err => console.error('❌ Service Worker registration failed:', err));
             });
         }
     </script>
 </head>
-
 <body>
     <div id="unity-container" class="unity-desktop">
         <canvas id="unity-canvas" width="1920" height="1080" tabindex="-1"></canvas>
@@ -44,26 +42,26 @@
         var canvas = document.querySelector("#unity-canvas");
 
         function unityShowBanner(msg, type) {
-            const warning = document.querySelector("#unity-warning");
-            const div = document.createElement("div");
+            var warningBanner = document.querySelector("#unity-warning");
+            var div = document.createElement('div');
             div.innerHTML = msg;
-            div.style = `background: ${type === 'error' ? 'red' : 'yellow'}; padding: 10px;`;
-            warning.appendChild(div);
+            div.style = 'background:' + (type === 'error' ? 'red' : 'yellow') + '; padding: 10px;';
+            warningBanner.appendChild(div);
             if (type !== 'error') {
                 setTimeout(() => {
-                    warning.removeChild(div);
-                    warning.style.display = warning.children.length ? 'block' : 'none';
+                    warningBanner.removeChild(div);
+                    warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
                 }, 5000);
             }
-            warning.style.display = 'block';
+            warningBanner.style.display = 'block';
         }
 
-        const buildUrl = "Build";
-        const loaderUrl = `${buildUrl}/NewWebBuild.loader.js`;
-        const config = {
-            dataUrl: `${buildUrl}/NewWebBuild.data`,
-            frameworkUrl: `${buildUrl}/NewWebBuild.framework.js`,
-            codeUrl: `${buildUrl}/NewWebBuild.wasm`,
+        var buildUrl = "Build";
+        var loaderUrl = buildUrl + "/NewWebBuild.loader.js";
+        var config = {
+            dataUrl: buildUrl + "/NewWebBuild.data",
+            frameworkUrl: buildUrl + "/NewWebBuild.framework.js",
+            codeUrl: buildUrl + "/NewWebBuild.wasm",
             streamingAssetsUrl: "StreamingAssets",
             companyName: "Ryoga4844",
             productName: "脱獄ごっこ",
@@ -72,7 +70,7 @@
         };
 
         if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-            const meta = document.createElement('meta');
+            var meta = document.createElement('meta');
             meta.name = 'viewport';
             meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
             document.getElementsByTagName('head')[0].appendChild(meta);
@@ -85,11 +83,11 @@
 
         document.querySelector("#unity-loading-bar").style.display = "block";
 
-        const script = document.createElement("script");
+        var script = document.createElement("script");
         script.src = loaderUrl;
         script.onload = () => {
             createUnityInstance(canvas, config, (progress) => {
-                document.querySelector("#unity-progress-bar-full").style.width = `${progress * 100}%`;
+                document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
             }).then((unityInstance) => {
                 document.querySelector("#unity-loading-bar").style.display = "none";
                 document.querySelector("#unity-fullscreen-button").onclick = () => {
