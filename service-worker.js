@@ -1,20 +1,19 @@
-﻿const cacheName = 'game-cache-v1';
+﻿const cacheName = '脱獄-cache-v1';
 
 const contentToCache = [
-    '/',
-    '/index.html',
-    '/manifest.json',
-    '/icon-192.png',
-    '/icon-512.png',
-    '/Build/NewWebBuild.data',
-    '/Build/NewWebBuild.framework.js',
-    '/Build/NewWebBuild.loader.js',
-    '/Build/NewWebBuild.wasm',
-    '/TemplateData/style.css',
-    '/TemplateData/favicon.ico'
+    './',
+    './index.html',
+    './manifest.json',
+    './icon-192.png',
+    './icon-512.png',
+    './Build/NewWebBuild.data',
+    './Build/NewWebBuild.framework.js',
+    './Build/NewWebBuild.loader.js',
+    './Build/NewWebBuild.wasm',
+    './TemplateData/style.css',
+    './TemplateData/favicon.ico'
 ];
 
-// インストール時にキャッシュ登録
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(cacheName).then((cache) => {
@@ -23,22 +22,20 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// 有効化と古いキャッシュ削除
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then((keys) =>
-            Promise.all(
+        caches.keys().then((keys) => {
+            return Promise.all(
                 keys.map((key) => {
                     if (key !== cacheName) {
                         return caches.delete(key);
                     }
                 })
-            )
-        )
+            );
+        })
     );
 });
 
-// フェッチイベント：キャッシュ優先
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((response) => {
