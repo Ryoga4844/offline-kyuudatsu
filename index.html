@@ -6,21 +6,21 @@
     <meta name="theme-color" content="#000000">
     <title>Unity Web Player | 脱獄ごっこ</title>
 
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/TemplateData/favicon.ico">
-    <link rel="stylesheet" href="/TemplateData/style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
 
-    <!-- Service Worker 登録 -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
+                navigator.serviceWorker.register('service-worker.js')
                     .then(() => console.log('✅ Service Worker registered'))
-                    .catch(err => console.error('❌ Service Worker registration failed:', err));
+                    .catch(err => console.error('❌ SW registration failed:', err));
             });
         }
     </script>
 </head>
+
 <body>
     <div id="unity-container" class="unity-desktop">
         <canvas id="unity-canvas" width="1920" height="1080" tabindex="-1"></canvas>
@@ -30,7 +30,7 @@
                 <div id="unity-progress-bar-full"></div>
             </div>
         </div>
-        <div id="unity-warning"></div>
+        <div id="unity-warning"> </div>
         <div id="unity-footer">
             <div id="unity-logo-title-footer"></div>
             <div id="unity-fullscreen-button"></div>
@@ -39,11 +39,11 @@
     </div>
 
     <script>
-        var canvas = document.querySelector("#unity-canvas");
+        const canvas = document.querySelector("#unity-canvas");
 
         function unityShowBanner(msg, type) {
-            var warningBanner = document.querySelector("#unity-warning");
-            var div = document.createElement('div');
+            const warningBanner = document.querySelector("#unity-warning");
+            const div = document.createElement('div');
             div.innerHTML = msg;
             div.style = 'background:' + (type === 'error' ? 'red' : 'yellow') + '; padding: 10px;';
             warningBanner.appendChild(div);
@@ -56,9 +56,9 @@
             warningBanner.style.display = 'block';
         }
 
-        var buildUrl = "Build";
-        var loaderUrl = buildUrl + "/NewWebBuild.loader.js";
-        var config = {
+        const buildUrl = "Build";
+        const loaderUrl = buildUrl + "/NewWebBuild.loader.js";
+        const config = {
             dataUrl: buildUrl + "/NewWebBuild.data",
             frameworkUrl: buildUrl + "/NewWebBuild.framework.js",
             codeUrl: buildUrl + "/NewWebBuild.wasm",
@@ -70,10 +70,6 @@
         };
 
         if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-            var meta = document.createElement('meta');
-            meta.name = 'viewport';
-            meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-            document.getElementsByTagName('head')[0].appendChild(meta);
             document.querySelector("#unity-container").className = "unity-mobile";
             canvas.className = "unity-mobile";
         } else {
@@ -83,7 +79,7 @@
 
         document.querySelector("#unity-loading-bar").style.display = "block";
 
-        var script = document.createElement("script");
+        const script = document.createElement("script");
         script.src = loaderUrl;
         script.onload = () => {
             createUnityInstance(canvas, config, (progress) => {
