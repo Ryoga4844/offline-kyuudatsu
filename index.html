@@ -6,14 +6,15 @@
     <meta name="theme-color" content="#000000">
     <title>Unity Web Player | 脱獄ごっこ</title>
 
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/TemplateData/favicon.ico">
+    <link rel="stylesheet" href="/TemplateData/style.css">
 
+    <!-- Service Worker を明示スコープ付きで登録 -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
+                navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
                     .then(() => console.log('✅ Service Worker registered'))
                     .catch(err => console.error('❌ SW registration failed:', err));
             });
@@ -30,7 +31,7 @@
                 <div id="unity-progress-bar-full"></div>
             </div>
         </div>
-        <div id="unity-warning"> </div>
+        <div id="unity-warning"></div>
         <div id="unity-footer">
             <div id="unity-logo-title-footer"></div>
             <div id="unity-fullscreen-button"></div>
