@@ -10,10 +10,13 @@ const contentToCache = [
     '/Build/NewWebBuild.framework.js',
     '/Build/NewWebBuild.loader.js',
     '/Build/NewWebBuild.wasm',
+    '/Build/NewWebBuild.js', // Unityが自動出力する場合あり
+    '/Build/boot.config',     // boot.configが存在する場合
     '/TemplateData/style.css',
     '/TemplateData/favicon.ico'
 ];
 
+// install: キャッシュ登録
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(cacheName).then((cache) => {
@@ -22,6 +25,7 @@ self.addEventListener('install', (event) => {
     );
 });
 
+// activate: 古いキャッシュ削除
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((keys) =>
@@ -36,6 +40,7 @@ self.addEventListener('activate', (event) => {
     );
 });
 
+// fetch: キャッシュ優先
 self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((response) => {
