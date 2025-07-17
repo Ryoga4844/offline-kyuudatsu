@@ -1,5 +1,6 @@
 ﻿const cacheName = 'game-cache-v1';
 
+// キャッシュ対象のすべてのファイル
 const contentToCache = [
     '/',
     '/index.html',
@@ -10,14 +11,25 @@ const contentToCache = [
     '/Build/NewWebBuild.framework.js',
     '/Build/NewWebBuild.loader.js',
     '/Build/NewWebBuild.wasm',
-    '/Build/NewWebBuild.js', // Unityが自動出力する場合あり
-    '/Build/boot.config',     // boot.configが存在する場合
+    '/Build/boot.config', // 存在しない場合は無視されるのでOK
+    '/StreamingAssets/UnityServicesProjectConfiguration.json',
     '/TemplateData/style.css',
-    '/TemplateData/favicon.ico'
+    '/TemplateData/favicon.ico',
+    '/TemplateData/fullscreen-button.png',
+    '/TemplateData/MemoryProfiler.png',
+    '/TemplateData/progress-bar-empty-dark.png',
+    '/TemplateData/progress-bar-empty-light.png',
+    '/TemplateData/progress-bar-full-dark.png',
+    '/TemplateData/progress-bar-full-light.png',
+    '/TemplateData/unity-logo-dark.png',
+    '/TemplateData/unity-logo-light.png',
+    '/TemplateData/unity-logo-title-footer.png',
+    '/TemplateData/webmemd-icon.png',
 ];
 
-// install: キャッシュ登録
+// インストール処理（キャッシュ登録）
 self.addEventListener('install', (event) => {
+    self.skipWaiting(); // 即時適用
     event.waitUntil(
         caches.open(cacheName).then((cache) => {
             return cache.addAll(contentToCache);
@@ -25,7 +37,7 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// activate: 古いキャッシュ削除
+// 有効化処理（古いキャッシュ削除）
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((keys) =>
@@ -38,13 +50,16 @@ self.addEventListener('activate', (event) => {
             )
         )
     );
+    return self.clients.claim();
 });
 
-// fetch: キャッシュ優先
+// fetch処理（キャッシュ優先）
 self.addEventListener('fetch', (event) => {
+    if (event.request.method !== 'GET') return;
+
     event.respondWith(
-        caches.match(event.request).then((response) => {
-            return response || fetch(event.request);
+        caches.match(event.request).then((cachedResponse) => {
+            return cachedResponse || fetch(event.request);
         })
     );
 });
