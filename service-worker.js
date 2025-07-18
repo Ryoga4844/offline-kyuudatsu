@@ -1,18 +1,20 @@
-﻿const cacheName = 'game-cache-v3';
+﻿const cacheName = 'game-cache-v2';
 
 const assetsToCache = [
-    '/', // ルートパスでインストールされたとき用
+    '/',
     '/index.html',
     '/manifest.json',
     '/icon-192.png',
     '/icon-512.png',
-    '/.nojekyll',
 
-    // Unity Build
+    // Build
     '/Build/NewWebBuild.loader.js',
-    '/Build/NewWebBuild.data',
     '/Build/NewWebBuild.framework.js',
+    '/Build/NewWebBuild.data',
     '/Build/NewWebBuild.wasm',
+
+    // StreamingAssets
+    '/StreamingAssets/UnityServicesProjectConfiguration.json',
 
     // TemplateData
     '/TemplateData/style.css',
@@ -26,38 +28,41 @@ const assetsToCache = [
     '/TemplateData/unity-logo-dark.png',
     '/TemplateData/unity-logo-light.png',
     '/TemplateData/unity-logo-title-footer.png',
-    '/TemplateData/webmemd-icon.png',
+    '/TemplateData/webmemd-icon.png'
 ];
 
-// install: 初回キャッシュ登録
 self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open(cacheName).then((cache) => {
-            return cache.addAll(assetsToCache);
-        })
+        caches.open(cacheName)
+            .then((cache) => cache.addAll(assetsToCache))
+    );
+    self.skipWaiting();
+});
+
+self.addEventListener('fetch', (event) => {
+    event.respondWith(
+        caches.match(event.request)
+            .then((cachedResponse) => {
+                return cachedResponse || fetch(event.request).catch(() => {
+                    if (event.request.destination === 'document') {
+                        return caches.match('/index.html');
+                    }
+                });
+            })
     );
 });
 
-// activate: 古いキャッシュ削除
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then((keyList) => {
-            return Promise.all(
+        caches.keys().then((keyList) =>
+            Promise.all(
                 keyList.map((key) => {
                     if (key !== cacheName) {
                         return caches.delete(key);
                     }
                 })
-            );
-        })
+            )
+        )
     );
-});
-
-// fetch: キャッシュ優先でレスポンス
-self.addEventListener('fetch', (event) => {
-    event.respondWith(
-        caches.match(event.request).then((response) => {
-            return response || fetch(event.request);
-        })
-    );
+    self.clients.claim();
 });
