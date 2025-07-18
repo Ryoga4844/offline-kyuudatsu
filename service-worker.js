@@ -1,34 +1,34 @@
 ﻿const cacheName = 'game-cache-v2';
 
 const assetsToCache = [
-    '/',
-    '/index.html',
-    '/manifest.json',
-    '/icon-192.png',
-    '/icon-512.png',
+    './',
+    './index.html',
+    './manifest.json',
+    './icon-192.png',
+    './icon-512.png',
 
     // Build
-    '/Build/NewWebBuild.loader.js',
-    '/Build/NewWebBuild.framework.js',
-    '/Build/NewWebBuild.data',
-    '/Build/NewWebBuild.wasm',
+    './Build/NewWebBuild.loader.js',
+    './Build/NewWebBuild.framework.js',
+    './Build/NewWebBuild.data',
+    './Build/NewWebBuild.wasm',
 
     // StreamingAssets
-    '/StreamingAssets/UnityServicesProjectConfiguration.json',
+    './StreamingAssets/UnityServicesProjectConfiguration.json',
 
     // TemplateData
-    '/TemplateData/style.css',
-    '/TemplateData/favicon.ico',
-    '/TemplateData/fullscreen-button.png',
-    '/TemplateData/MemoryProfiler.png',
-    '/TemplateData/progress-bar-empty-dark.png',
-    '/TemplateData/progress-bar-empty-light.png',
-    '/TemplateData/progress-bar-full-dark.png',
-    '/TemplateData/progress-bar-full-light.png',
-    '/TemplateData/unity-logo-dark.png',
-    '/TemplateData/unity-logo-light.png',
-    '/TemplateData/unity-logo-title-footer.png',
-    '/TemplateData/webmemd-icon.png'
+    './TemplateData/style.css',
+    './TemplateData/favicon.ico',
+    './TemplateData/fullscreen-button.png',
+    './TemplateData/MemoryProfiler.png',
+    './TemplateData/progress-bar-empty-dark.png',
+    './TemplateData/progress-bar-empty-light.png',
+    './TemplateData/progress-bar-full-dark.png',
+    './TemplateData/progress-bar-full-light.png',
+    './TemplateData/unity-logo-dark.png',
+    './TemplateData/unity-logo-light.png',
+    './TemplateData/unity-logo-title-footer.png',
+    './TemplateData/webmemd-icon.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -45,7 +45,7 @@ self.addEventListener('fetch', (event) => {
             .then((cachedResponse) => {
                 return cachedResponse || fetch(event.request).catch(() => {
                     if (event.request.destination === 'document') {
-                        return caches.match('/index.html');
+                        return caches.match('./index.html');
                     }
                 });
             })

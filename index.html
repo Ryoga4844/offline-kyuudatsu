@@ -6,15 +6,14 @@
     <meta name="theme-color" content="#000000">
     <title>脱獄ごっこ</title>
 
-    <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/TemplateData/favicon.ico">
-    <link rel="stylesheet" href="/TemplateData/style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
 
-    <!-- Service Worker 登録 -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
+                navigator.serviceWorker.register('service-worker.js')
                     .then(() => console.log('✅ Service Worker registered'))
                     .catch(err => console.error('❌ SW registration failed:', err));
             });
