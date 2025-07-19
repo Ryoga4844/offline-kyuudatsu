@@ -6,14 +6,16 @@
     <meta name="theme-color" content="#000000">
     <title>脱獄ごっこ</title>
 
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
+    <!-- PWA manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/TemplateData/favicon.ico">
+    <link rel="stylesheet" href="/TemplateData/style.css">
 
+    <!-- Service Worker登録 -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('service-worker.js')
+                navigator.serviceWorker.register('/service-worker.js', { scope: '/' })
                     .then(() => console.log('✅ Service Worker registered'))
                     .catch(err => console.error('❌ SW registration failed:', err));
             });
@@ -39,20 +41,19 @@
 
     <script>
         const canvas = document.querySelector("#unity-canvas");
-
         function unityShowBanner(msg, type) {
-            const warningBanner = document.querySelector("#unity-warning");
-            const div = document.createElement('div');
+            const warning = document.querySelector("#unity-warning");
+            const div = document.createElement("div");
             div.innerHTML = msg;
-            div.style = 'background:' + (type === 'error' ? 'red' : 'yellow') + '; padding: 10px;';
-            warningBanner.appendChild(div);
-            if (type !== 'error') {
+            div.style = "background:" + (type === "error" ? "red" : "yellow") + "; padding:10px;";
+            warning.appendChild(div);
+            if (type !== "error") {
                 setTimeout(() => {
-                    warningBanner.removeChild(div);
-                    warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+                    warning.removeChild(div);
+                    warning.style.display = warning.children.length ? "block" : "none";
                 }, 5000);
             }
-            warningBanner.style.display = 'block';
+            warning.style.display = "block";
         }
 
         const buildUrl = "Build";
@@ -81,16 +82,12 @@
         const script = document.createElement("script");
         script.src = loaderUrl;
         script.onload = () => {
-            createUnityInstance(canvas, config, (progress) => {
-                document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
-            }).then((unityInstance) => {
+            createUnityInstance(canvas, config, (prog) => {
+                document.querySelector("#unity-progress-bar-full").style.width = (100 * prog) + "%";
+            }).then((instance) => {
                 document.querySelector("#unity-loading-bar").style.display = "none";
-                document.querySelector("#unity-fullscreen-button").onclick = () => {
-                    unityInstance.SetFullscreen(1);
-                };
-            }).catch((message) => {
-                alert(message);
-            });
+                document.querySelector("#unity-fullscreen-button").onclick = () => instance.SetFullscreen(1);
+            }).catch(alert);
         };
         document.body.appendChild(script);
     </script>
