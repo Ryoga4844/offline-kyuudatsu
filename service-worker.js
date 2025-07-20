@@ -1,21 +1,15 @@
-﻿const cacheName = 'game-cache-v3';
+﻿const cacheName = 'game-cache-v4';
 const assetsToCache = [
     './',
     './index.html',
     './manifest.json',
     './icon-192.png',
     './icon-512.png',
-
-    // Build
     './Build/NewWebBuild.loader.js',
     './Build/NewWebBuild.framework.js',
     './Build/NewWebBuild.data',
     './Build/NewWebBuild.wasm',
-
-    // StreamingAssets
     './StreamingAssets/UnityServicesProjectConfiguration.json',
-
-    // TemplateData
     './TemplateData/style.css',
     './TemplateData/favicon.ico',
     './TemplateData/fullscreen-button.png',
